@@ -3,6 +3,8 @@ import { VscGithubInverted, VscSignOut } from 'react-icons/vsc';
 import { AuthContext } from '../../context/auth';
 import { api } from '../../services/api';
 import styles from './styles.module.scss';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function SendMessageForm() {
   const [message, setMessage] = useState('');
@@ -12,16 +14,33 @@ export function SendMessageForm() {
     event.preventDefault();
 
     if (!message.trim()) {
+      toast.info('Sua mensagem não pode estar vazia!', {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true
+        });
       return;
     }
 
     await api.post('messages', { message });
 
     setMessage('');
+    toast.success('🚀 Sua mensagem foi enviada!', {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true
+    });
   }
 
   return (
     <div className={styles.sendMessageFormWrapper}>
+      <ToastContainer />
       <button onClick={signOut} className={styles.signOutButton}>
         <VscSignOut size={32} />
       </button>
